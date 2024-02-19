@@ -25,6 +25,9 @@ export class UserService {
       throw new Error('Organization not found');
     }
     const user = new User();
+    if (!name) {
+      throw new Error('Property name is required for User');
+    }
     user.name = name;
     user.organization = organization;
     if (credential) {

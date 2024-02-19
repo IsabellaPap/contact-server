@@ -1,16 +1,18 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
-import { UserDTO } from 'src/models/user.dto';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { User } from 'src/entity/user.entity';
 import { UserService } from 'src/service/user.service';
 
+@ApiTags('User')
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
   @ApiOperation({ summary: 'Register (create) one User' })
-  createUser(@Body() userDto: UserDTO) {
-    return this.userService.createUser(userDto);
+  @ApiCreatedResponse({ type: User })
+  createUser(@Body() user: User) {
+    return this.userService.createUser(user);
   }
 
   @Get()

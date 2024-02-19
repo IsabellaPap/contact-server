@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
-import { OrganizationDTO } from 'src/models/organization.dto';
+import { Organization } from 'src/entity/organization.entity';
 import { OrganizationService } from 'src/service/organization.service';
 
 @Controller('organization')
@@ -9,13 +9,13 @@ export class OrganizationController {
 
   @Post()
   @ApiOperation({ summary: 'Create one Organization' })
-  createUser(@Body() organizationDto: OrganizationDTO) {
-    return this.organizationService.createOrganization(organizationDto);
+  createOrganization(@Body() organization: Organization) {
+    return this.organizationService.createOrganization(organization);
   }
 
   @Get()
   @ApiOperation({ summary: 'Get a list of all Organizations' })
-  getAllUsers() {
+  getAllOrganizations() {
     return this.organizationService.getAllOrganizations();
   }
 }

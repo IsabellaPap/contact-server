@@ -7,6 +7,8 @@ import { Organization } from './entity/organization.entity';
 import { Contact } from './entity/contact.entity';
 import { OrganizationService } from './service/organization.service';
 import { OrganizationController } from './controller/organization.controller';
+import { ContactService } from './service/contact.service';
+import { ContactController } from './controller/contact.controller';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { OrganizationController } from './controller/organization.controller';
     }),
     TypeOrmModule.forFeature([User, Organization, Contact]),
   ],
-  providers: [UserService, OrganizationService],
-  controllers: [UserController, OrganizationController],
+  providers: [UserService, OrganizationService, ContactService],
+  controllers: [UserController, OrganizationController, ContactController],
 })
 export class AppModule {}

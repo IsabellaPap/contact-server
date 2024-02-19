@@ -17,6 +17,9 @@ export class OrganizationService {
     const { name } = organizationDto;
 
     const organization = new Organization();
+    if (!name) {
+      throw new Error('Property `name` is required for Organization');
+    }
     organization.name = name;
 
     return await this.organizationRepository.save(organization);

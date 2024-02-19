@@ -1,4 +1,4 @@
 export class OrganizationDTO {
   id?: string;
-  name: string;
+  name?: string;
 }
