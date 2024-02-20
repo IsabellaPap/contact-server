@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { Organization } from './organization.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { ContactDTO } from 'src/models/contact.dto';
+import { ContactDTO } from 'src/contact-server/models/contact.dto';
 
 @Entity()
 export class Contact implements ContactDTO {
@@ -44,7 +44,9 @@ export class Contact implements ContactDTO {
     description: 'Organization.',
     required: false,
   })
-  @ManyToOne(() => Organization, (organization) => organization.contacts)
+  @ManyToOne(() => Organization, (organization) => organization.contacts, {
+    lazy: true,
+  })
   organization!: Organization;
 
   @ApiProperty({

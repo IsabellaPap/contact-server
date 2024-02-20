@@ -1,8 +1,8 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Organization } from 'src/entity/organization.entity';
-import { User } from 'src/entity/user.entity';
-import { UserDTO } from 'src/models/user.dto';
+import { Organization } from 'src/contact-server/entity/organization.entity';
+import { User } from 'src/contact-server/entity/user.entity';
+import { UserDTO } from 'src/contact-server/models/user.dto';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 

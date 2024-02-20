@@ -1,4 +1,4 @@
-import { OrganizationDTO } from 'src/models/organization.dto';
+import { OrganizationDTO } from 'src/contact-server/models/organization.dto';
 
 export interface JwtPayload {
   username: string;

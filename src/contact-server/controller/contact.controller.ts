@@ -9,9 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Contact } from 'src/entity/contact.entity';
-import { JwtAuthGuard } from 'src/guard/jwt.guard';
-import { ContactService } from 'src/service/contact.service';
+import { Contact } from 'src/contact-server/entity/contact.entity';
+import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
+import { ContactService } from 'src/contact-server/service/contact.service';
 
 @ApiTags('Contact')
 @UseGuards(JwtAuthGuard)

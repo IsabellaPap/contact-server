@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Organization } from './organization.entity';
-import { UserDTO } from 'src/models/user.dto';
+import { UserDTO } from 'src/contact-server/models/user.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('user')
@@ -32,6 +32,9 @@ export class User implements UserDTO {
     description: 'Organization.',
     required: false,
   })
-  @ManyToOne(() => Organization, (organization) => organization.users)
+  @ManyToOne(() => Organization, (organization) => organization.users, {
+    lazy: true,
+  })
+  @ApiProperty({ type: () => Organization })
   organization!: Organization;
 }

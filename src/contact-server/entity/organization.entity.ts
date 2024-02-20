@@ -24,13 +24,13 @@ export class Organization {
     description: 'Users in Organization.',
     required: false,
   })
-  @OneToMany(() => User, (user) => user.organization)
+  @OneToMany(() => User, (user) => user.organization, { lazy: true })
   users?: User[];
 
   @ApiProperty({
     description: 'Contacts in Organization.',
     required: false,
   })
-  @OneToMany(() => User, (contact) => contact.organization)
+  @OneToMany(() => User, (contact) => contact.organization, { lazy: true })
   contacts?: Contact[];
 }

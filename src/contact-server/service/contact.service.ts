@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Contact } from 'src/entity/contact.entity';
-import { Organization } from 'src/entity/organization.entity';
-import { User } from 'src/entity/user.entity';
-import { ContactDTO } from 'src/models/contact.dto';
+import { Contact } from 'src/contact-server/entity/contact.entity';
+import { Organization } from 'src/contact-server/entity/organization.entity';
+import { User } from 'src/contact-server/entity/user.entity';
+import { ContactDTO } from 'src/contact-server/models/contact.dto';
 import { Repository } from 'typeorm';
 import { MoreThanOrEqual } from 'typeorm';
 

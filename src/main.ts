@@ -10,6 +10,7 @@ async function bootstrap() {
     .setDescription('An API for managing contacts within Organizations')
     .setVersion('1.0') //dynamic
     .addTag('nestjs')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
