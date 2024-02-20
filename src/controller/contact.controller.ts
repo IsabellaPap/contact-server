@@ -6,12 +6,15 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Contact } from 'src/entity/contact.entity';
+import { JwtAuthGuard } from 'src/guard/jwt.guard';
 import { ContactService } from 'src/service/contact.service';
 
 @ApiTags('Contact')
+@UseGuards(JwtAuthGuard)
 @Controller('contacts')
 export class ContactController {
   constructor(private readonly contactService: ContactService) {}
@@ -51,8 +54,9 @@ export class ContactController {
     await this.contactService.deleteContact(id);
   }
 
-  @Get('new-contacts/:since')
-  async getNewContacts(@Param('since') since: Date): Promise<number> {
-    return this.contactService.getTotalNewContacts(since);
+  @Get('new-contacts')
+  async getNewContacts(): Promise<number> {
+    //const since = req.lastAuthTimestamp;
+    return this.contactService.getTotalNewContacts(new Date());
   }
 }

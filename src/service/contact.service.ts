@@ -19,10 +19,10 @@ export class ContactService {
   ) {}
 
   async createContact(contactDto: ContactDTO): Promise<Contact> {
-    const { firstName, lastName, email, userId } = contactDto;
+    const { firstName, lastName, email } = contactDto;
 
     const user = await this.userRepository.findOne({
-      where: { id: userId },
+      where: { name: 'username' },
     });
     if (!user) {
       throw new Error('User not found');

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Organization } from 'src/entity/organization.entity';
 import { User } from 'src/entity/user.entity';
@@ -41,5 +41,26 @@ export class UserService {
 
   async getAllUsers(): Promise<User[]> {
     return this.userRepository.find();
+  }
+
+  async findUserByUsernameAndPassword(
+    username: string,
+    password: string,
+  ): Promise<User> {
+    if (!username) {
+      throw new HttpException('User.name=null not found!', 400);
+    }
+    const user = await this.userRepository.findOne({
+      where: { name: username },
+    });
+    if (!user) {
+      console.log(``);
+      throw new HttpException(`User.name=${username} not found!`, 404);
+    }
+    if (await bcrypt.compare(password, user.credential!)) {
+      console.log(`User.name=${username} password mismatch!`);
+      throw new HttpException(`User.name=${username} password mismatch!`, 401);
+    }
+    return user;
   }
 }
