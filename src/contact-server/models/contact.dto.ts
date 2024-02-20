@@ -1,3 +1,5 @@
+import { Organization } from '../entity/organization.entity';
+
 export interface ContactDTO {
   id?: string;
   firstName?: string;
@@ -5,4 +7,5 @@ export interface ContactDTO {
   email: string; // validation ?
   createdOn: Date;
   userId?: string;
+  organization?: Organization;
 }

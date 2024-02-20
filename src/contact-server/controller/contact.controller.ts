@@ -7,14 +7,24 @@ import {
   Post,
   Put,
   UseGuards,
+  Request,
+  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Contact } from 'src/contact-server/entity/contact.entity';
 import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
 import { ContactService } from 'src/contact-server/service/contact.service';
+import { CreateContactDTO } from '../models/create-contact.dto';
 
 @ApiTags('Contact')
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 @Controller('contacts')
 export class ContactController {
   constructor(private readonly contactService: ContactService) {}
@@ -22,8 +32,11 @@ export class ContactController {
   @Post()
   @ApiOperation({ summary: 'Create one Contact' })
   @ApiCreatedResponse({ type: Contact })
-  createContact(@Body() contact: Contact): Promise<Contact> {
-    return this.contactService.createContact(contact);
+  createContact(
+    @Body() contact: CreateContactDTO,
+    @Request() req: any,
+  ): Promise<Contact> {
+    return this.contactService.createContact(req.user.name, contact);
   }
 
   @Get()
@@ -50,13 +63,31 @@ export class ContactController {
 
   @Delete(':id')
   @ApiOperation({ summary: 'Delete one contact by id' })
-  async deleteContact(@Param('id') id: string): Promise<void> {
+  async deleteContact(
+    @Param('id') id: string,
+    @Request() req: any,
+  ): Promise<void> {
+    const userOrganizationId = req.user.organization.id;
+    const contact = await this.contactService.getContactById(id);
+
+    if (!contact) {
+      throw new NotFoundException('Contact not found');
+    }
+
+    // Check if the user belongs to the same organization as the contact
+    if (contact.organization.id !== userOrganizationId) {
+      throw new UnauthorizedException(
+        'Unauthorized: User does not belong to the same organization as the contact',
+      );
+    }
+
     await this.contactService.deleteContact(id);
   }
 
   @Get('new-contacts')
-  async getNewContacts(): Promise<number> {
-    //const since = req.lastAuthTimestamp;
-    return this.contactService.getTotalNewContacts(new Date());
+  async getNewContacts(@Request() req: any): Promise<number> {
+    const since = req.user.lastLogin; //this will remain a mystery for now
+    console.log(since);
+    return this.contactService.getTotalNewContacts(since);
   }
 }

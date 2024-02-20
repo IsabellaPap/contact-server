@@ -23,12 +23,15 @@ export class AuthService {
       password,
     );
 
+    user.lastLogin = new Date();
+
     const jwt: JwtPayload = {
       username: user.name,
-      token: '',
-      lastAuthTimestamp: new Date(),
+      token: await this.generateJwtToken(user),
+      lastAuthTimestamp: user.lastLogin,
       organization: user.organization,
     };
+
     return jwt;
   }
 

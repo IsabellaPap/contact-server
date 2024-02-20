@@ -44,9 +44,8 @@ export class Contact implements ContactDTO {
     description: 'Organization.',
     required: false,
   })
-  @ManyToOne(() => Organization, (organization) => organization.contacts, {
-    lazy: true,
-  })
+  @ManyToOne(() => Organization, (organization) => organization.contacts)
+  @ApiProperty({ type: () => Organization })
   organization!: Organization;
 
   @ApiProperty({

@@ -2,9 +2,9 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Organization } from 'src/contact-server/entity/organization.entity';
 import { User } from 'src/contact-server/entity/user.entity';
-import { UserDTO } from 'src/contact-server/models/user.dto';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { CreateUserDTO } from '../models/create-user.dto';
 
 @Injectable()
 export class UserService {
@@ -15,7 +15,7 @@ export class UserService {
     private readonly organizationRepository: Repository<Organization>,
   ) {}
 
-  async createUser(userDto: UserDTO): Promise<User> {
+  async createUser(userDto: CreateUserDTO): Promise<User> {
     const { name, credential, organizationName } = userDto;
 
     const organization = await this.organizationRepository.findOne({
@@ -40,7 +40,9 @@ export class UserService {
   }
 
   async getAllUsers(): Promise<User[]> {
-    return this.userRepository.find();
+    return this.userRepository.find({
+      relations: ['organization'],
+    });
   }
 
   async findUserByUsernameAndPassword(
@@ -52,12 +54,13 @@ export class UserService {
     }
     const user = await this.userRepository.findOne({
       where: { name: username },
+      relations: ['organization'],
     });
     if (!user) {
       console.log(``);
       throw new HttpException(`User.name=${username} not found!`, 404);
     }
-    if (await bcrypt.compare(password, user.credential!)) {
+    if (!(await bcrypt.compare(password, user.credential!))) {
       console.log(`User.name=${username} password mismatch!`);
       throw new HttpException(`User.name=${username} password mismatch!`, 401);
     }

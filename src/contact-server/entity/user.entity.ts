@@ -30,11 +30,16 @@ export class User implements UserDTO {
 
   @ApiProperty({
     description: 'Organization.',
-    required: false,
+    required: true,
   })
-  @ManyToOne(() => Organization, (organization) => organization.users, {
-    lazy: true,
-  })
+  @ManyToOne(() => Organization, (organization) => organization.users)
   @ApiProperty({ type: () => Organization })
   organization!: Organization;
+
+  @ApiProperty({
+    description: 'Last login timestamp.',
+    required: false,
+  })
+  @Column({ name: 'lastlogin', nullable: true })
+  lastLogin?: Date;
 }

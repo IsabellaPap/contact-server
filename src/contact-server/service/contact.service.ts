@@ -6,6 +6,7 @@ import { User } from 'src/contact-server/entity/user.entity';
 import { ContactDTO } from 'src/contact-server/models/contact.dto';
 import { Repository } from 'typeorm';
 import { MoreThanOrEqual } from 'typeorm';
+import { CreateContactDTO } from '../models/create-contact.dto';
 
 @Injectable()
 export class ContactService {
@@ -18,11 +19,15 @@ export class ContactService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async createContact(contactDto: ContactDTO): Promise<Contact> {
+  async createContact(
+    username: string,
+    contactDto: CreateContactDTO,
+  ): Promise<Contact> {
     const { firstName, lastName, email } = contactDto;
 
     const user = await this.userRepository.findOne({
-      where: { name: 'username' },
+      where: { name: username },
+      relations: ['organization'],
     });
     if (!user) {
       throw new Error('User not found');
@@ -57,6 +62,7 @@ export class ContactService {
   async getContactById(id: string): Promise<Contact> {
     const contact = await this.contactRepository.findOne({
       where: { id: id },
+      relations: ['organization'],
     });
     if (!contact) {
       throw new Error('Contact not found');
@@ -67,6 +73,7 @@ export class ContactService {
   async updateContact(id: string, contactDto: ContactDTO): Promise<Contact> {
     const contact = await this.contactRepository.findOne({
       where: { id: id },
+      relations: ['organizaton'],
     });
     if (!contact) {
       throw new Error('Contact not found');

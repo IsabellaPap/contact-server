@@ -3,4 +3,5 @@ export class UserDTO {
   name?: string;
   credential?: string;
   organizationName?: string;
+  lastlogin?: Date;
 }

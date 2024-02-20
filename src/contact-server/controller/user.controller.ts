@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/contact-server/entity/user.entity';
 import { UserService } from 'src/contact-server/service/user.service';
+import { CreateUserDTO } from '../models/create-user.dto';
 
 @ApiTags('User')
 @Controller('users')
@@ -11,7 +12,7 @@ export class UserController {
   @Post()
   @ApiOperation({ summary: 'Register (create) one User' })
   @ApiCreatedResponse({ type: User })
-  createUser(@Body() user: User) {
+  createUser(@Body() user: CreateUserDTO) {
     return this.userService.createUser(user);
   }
 
